@@ -42,7 +42,8 @@ Demo
 
 currently using Webtastic
 
-* [Mashhadlug LUG](http://next.mashhadlug.org)
+* [MashhadLUG](http://next.mashhadlug.org)
+* [MashhadPUG](http://poython.mashhadlug.org)
 * [Mashhadlug Hackathon](http://hackathon.mashhadlug.org)
 
 LICENSE
