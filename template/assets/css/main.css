@@ -531,3 +531,12 @@ a:after {
 #copyright ul li ul li a:hover i{
   color: #FF8815;
 }
+
+pre code{
+  direction: ltr;
+  text-align: left;
+}
+pre{
+  direction: ltr;
+  text-align: left;
+}
