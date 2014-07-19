@@ -316,6 +316,7 @@ a:after {
 	background: #1a1a1a;
 	width: 200px;
 	height: 100%;
+  opacity: 0.9
 }
 
 .menu h1.logo a {
@@ -529,4 +530,13 @@ a:after {
 }
 #copyright ul li ul li a:hover i{
   color: #FF8815;
+}
+
+pre code{
+  direction: ltr;
+  text-align: left;
+}
+pre{
+  direction: ltr;
+  text-align: left;
 }
