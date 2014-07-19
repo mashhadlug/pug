@@ -1,0 +1,21 @@
+<!-- Menu -->
+<nav class="menu" id="theMenu">
+  <div class="menu-wrap">
+    <h1 class="logo"><a href="/#home">عنوان مطالب</a></h1>
+    <i class="icon-remove menu-close"></i>
+    {% for entry in source.src_files('source/', false, true) | sort_navbar_by %}
+      {% if entry.navbar.title %}
+      <a href="{{ entry.navbar.link }}" class="smoothScroll">{{ entry.navbar.title }}</a>
+      {% endif %}
+    {% endfor %}
+    <!--
+    <a href="#"><i class="icon-facebook"></i></a>
+    <a href="#"><i class="icon-twitter"></i></a>
+    <a href="#"><i class="icon-dribbble"></i></a>
+    <a href="#"><i class="icon-envelope"></i></a>
+    -->
+  </div>
+  
+  <!-- Menu button -->
+  <div id="menuToggle"><i class="icon-reorder"></i></div>
+</nav>

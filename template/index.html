@@ -1,0 +1,198 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+  <!-- ========== WHITE SECTION ========== -->
+  <div id="w" style="display: none;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          
+          <div id="carousel-example-generic" class="carousel slide">
+            <!-- Indicators -->
+            <!--
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            </ol>
+            -->
+          
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active">
+                <h3>
+                  
+                  WELCOME TO <bold>ONASSIS</bold>. <bold>A FREE BOOTSTRAP 3</bold> THEME. CRAFTED WITH LOVE BY <bold>BLACKTIE.CO</bold>. <br/>
+                  <bold>IDEAL FOR</bold> AGENCIES & FREELANCERS.
+                </h3>
+              </div>
+              <div class="item">
+                <h3>WELCOME TO <bold>ONASSIS</bold>. <bold>A FREE BOOTSTRAP 3</bold> THEME. CRAFTED WITH LOVE BY <bold>BLACKTIE.CO</bold>. <br/>
+                  <bold>IDEAL FOR</bold> AGENCIES & FREELANCERS.
+                </h3>
+              </div>
+            </div>
+          </div>
+          
+          <!---->
+          <!--
+          <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left">N</i></a>
+          <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right">P</i></a>
+          -->
+        </div>
+      </div>
+    </div><!-- /container -->
+  </div><!-- /w -->
+  
+  <!-- ========== EVENTS - GREY SECTION ========== -->
+  <section id="events" name="events"></section>
+  <div id="g">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="container">
+            <div class="row">
+              {% for event in source.src_files('source/events/', false, true) %}
+              <h1>{{ event.title }}</h1>
+              <p class="text-center">{{ event.timer.printable_date }}</p>
+              {% if event.timer %}
+                <ul class="list-unstyled event-timer" data-time="{{ event.timer.due_date }}">
+                  <li>
+                    {snn}
+                    <span>ثانیه</span>
+                  </li> 
+                  <li>
+                    {mnn}
+                    <span>دقیقه</span>
+                  </li> 
+                  <li>
+                    {hn}
+                    <span>ساعت</span>
+                  </li> 
+                  <li>
+                    {dn}
+                    <span>روز</span>
+                  </li> 
+                </ul>
+              {% endif %}
+              
+              <div class="col-lg-8 text-right" style="text-align: right;">
+                <br>
+                <p>{{ event.content | markdown }}</p>
+                <br>
+              </div>
+              <div class="col-lg-4" style="text-align: right;">
+                <img src="{{ event.map.thumb }}" class="img-responsive" alt="{{ event.location.address }}">
+                <p class="text-mute">
+                  برای نمایی بزرگتر
+                  <a target="_new" href="{{ event.map.url }}">اینجا</a>
+                  را کلیک کنید.
+                </p>
+                <p>{{ event.location.address }}</p>
+                <ul class="">
+                  {% for route in event.location.routes %}
+                  <li>{{ route }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /container -->
+  </div><!-- /g -->
+  
+  <!-- ========== REPORTS - GREY SECTION ========== -->
+  <section id="reports" name="reports"></section>
+  <div id="dg">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12" style="margin-top: 30px;">
+          <div id="carousel-example-generic2" class="carousel slide">
+            <!-- Indicators -->
+            <!--
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            </ol>
+            -->
+          
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              {% for sessions in source.src_files('source/sessions/', true, true) | sort_by_published(true) | batch(2) %}
+              <div class="item {{ 'active' if loop.index==1 }}">
+                <div class="container">
+                  <div class="row">
+                    {% for session in sessions %}
+                    <div class="col-lg-6">
+                      <h4>
+                        <a href="{{ session.link }}" title="{{ session.title }}">{{ session.title }}</a>
+                      </h4>
+                      <p>{{ session.content | markdown_less_story | markdown }}</p>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /container -->
+  </div><!-- /g -->
+  
+  <!-- ========== CHARTS - DARK GREY SECTION ========== -->
+  {% set session = source.src_files('source/_sessions', false, true)[0] %}
+  <section id="charts" name="charts"></section>
+  <div id="g">
+    <div class="container">
+      <div class="row">
+        <h3>{{ session.navbar.title }}</h3>
+        <br>
+        <p style="text-align: right;">{{ session.content }}</p>
+        <br>
+        {% for chart in session.charts %}
+        <div class="col-lg-3">
+          <canvas id="{{ chart.id }}" height="130" width="130"></canvas>
+          <br>
+          <h4>{{ chart.title }}</h4>
+          <br>
+          <script>
+            var doughnutData = [
+                {
+                  value: {{ chart.percent }},
+                  color: "{{ chart.color }}"
+                },
+                {
+                  value : {{ 100 - chart.percent }},
+                  color : "#ecf0f1"
+                }
+              ];
+              var myDoughnut = new Chart(document.getElementById("{{ chart.id }}").getContext("2d")).Doughnut(doughnutData);
+          </script>
+        </div>
+        {% endfor %}
+      </div>  
+    </div><!-- /container -->
+  </div><!-- /dg -->
+  
+  <section id="books" name="books"></section>
+  <div id="portfoliowrap">
+    <div class="container">
+      <div class="row">
+        <h3>کتاب‌های پیشنهادی گروه</h3>
+        <br>
+        <br>
+        {% for book in source.src_files('source/books/', false, true) if book.title %}
+        <div class="col-lg-4 port-space tilt">
+          <a target="_new" href="{{ book.view }}" title="{{ book.title }}">
+            <img src="{{ book.thumb }}">
+          </a>
+        </div>
+        {% endfor %}
+      </div>  
+    </div><!-- /container -->
+  </div><!-- /portfoliowrap -->
+
+{% endblock %}
