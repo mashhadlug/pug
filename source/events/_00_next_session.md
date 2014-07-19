@@ -7,7 +7,7 @@ timer:
   printable_date: دوشنبه ۳۰ تیرماه ماه ۱۳۹۳، ساعت ۱۷ الی ۱۸:۳۰
 map:
   thumb: events/map_thumb.png
-  url: http://www.openstreetmap.org/?mlat=36.29214&mlon=59.56787#map=17/36.29214/59.56787&layers=H
+  url: http://www.openstreetmap.org/?mlat=36.29899&mlon=59.56851#map=18/36.29899/59.56851
 location:
   address: بلوار احمدآباد، خیابان راهنمایی، راهنمایی ۲ پلاک ۱۱۰ واحد ۹، شرکت پیشگامان گسترش متن‌باز
   routes:
