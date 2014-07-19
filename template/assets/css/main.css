@@ -316,6 +316,7 @@ a:after {
 	background: #1a1a1a;
 	width: 200px;
 	height: 100%;
+  opacity: 0.9
 }
 
 .menu h1.logo a {
