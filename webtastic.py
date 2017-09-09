@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# from lib import SourceTree
+
 import jinja2
 from jinja2.exceptions import TemplateNotFound
 import markdown
@@ -7,15 +7,16 @@ import os
 import datetime
 import re
 import argparse
+import sys
 
 from yapsy.PluginManager import PluginManagerSingleton
 from yapsy.VersionedPluginManager import VersionedPluginManager
 import logging
 import shutil, errno
 
-
 import yaml
 from yaml import Loader, SafeLoader
+
 def construct_yaml_str(self, node):
   # Override the default string handling function 
   # to always return unicode objects
@@ -27,7 +28,10 @@ def utf8 (func):
   def inner(*args, **kwargs):
     output = func(*args, **kwargs)
     if isinstance(output, str):
-      output = output.decode('utf8')
+      if sys.version_info.major < 3:
+        output = output.decode('utf8')
+      else:
+        output = output
     return output
   return inner
 
@@ -70,7 +74,11 @@ class Webtastic(object):
     """ Function doc """
     f = open(path, 'w')
     # TODO: return by Exceptions
-    f.write(content.encode('utf8'))
+    try:
+      f.write(content)
+    except UnicodeEncodeError:
+      f.write(content.encode("utf8"))
+    
     f.close()
     return True
   
@@ -83,7 +91,7 @@ class Webtastic(object):
     
     # Get Arguments
     self.args = vars(self.parser.parse_args())
-    print self.args
+    print (self.args)
     
     # OUTPUT and 
     base_url = self.args['base_url']
@@ -112,7 +120,7 @@ class Webtastic(object):
       os.system("cp %s %s" % (src, dst))
     # read every source file and compile it into OUTPUT directory
     for src_file in self.sources.src_files():
-      print 'html: ' + src_file.path
+      print ('html: ' + src_file.path)
       self.src_file = src_file
       
       # TODO: add output variable
@@ -138,7 +146,6 @@ class Webtastic(object):
       output_content = template.render(page=self.src_file, source=self.sources)
       output_content = re.sub("$BASE_URL", "html/", output_content)
       # TODO: plugin's AFTER_TEMPLATE_RENDER
-      
       # TODO: plugin's BEFORE_WRITE_OUTPUT
       self.write_file(output_file, output_content)
       # TODO: plugin's AFTER_WRITE_OUTPUT
@@ -238,7 +245,7 @@ class WebtasticSourceFile(object):
       self.__content__ = raw_content
     except Exception as e:
       # TODO: Raise an Exception
-      print "ERROR HAPPENDED ", e.message
+      print ("ERROR HAPPENDED ", e.message)
       pass
   
   def __getattr__ (self, key):
